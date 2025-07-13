@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>VHS Antigos - Catálogo</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: #000000;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .background-img {
+      position: absolute;
+      top: -18%;
+      left: -5%;
+      width: 150%;
+      height: 150%;
+      background: url('imagens/black.png') no-repeat center center;
+      background-size: cover;
+      filter: blur(8px) brightness(0.4);
+      transform: rotate(-5deg);
+      z-index: -2;
+      animation: vhsEffect 3s infinite ease-in-out;
+    }
+
+    @keyframes vhsEffect {
+      0%, 100% {
+        opacity: 1;
+        filter: blur(8px) brightness(0.4);
+        transform: rotate(-5deg) scale(1);
+      }
+      50% {
+        opacity: 0.7;
+        filter: blur(9px) brightness(0.35);
+        transform: rotate(-5deg) translateX(2px) scale(1.01);
+      }
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+    .intro {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+    .intro-texto {
+      max-width: 600px;
+    }
+    .intro-texto h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+    .intro-texto p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+    .intro-logo img {
+      max-width: 500px;
+      width: 100%;
+      height: auto;
+    }
+    .catalogo {
+      margin-top: 70px;
+    }
+    .catalogo h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 20px;
+    }
+    .filme {
+      position: relative;
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.1s ease;
+    }
+    .filme img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .filme:hover {
+      transform: scale(1.05);
+    } <!-- cara aqui é de cores botoes --
+    .filme-title {  
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      background: rgba(85, 47, 224, 0.6);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="background-img"></div>
+  <div class="overlay"></div>
+  <div class="overlay-dark"></div>
+
+  <div class="container">
+    <section class="intro">
+      <div class="intro-texto">
+        <h1>Bem-vindo Miguel!</h1>
+        <p>Eea Manoooooooo. Como você está? Veja videos incriveis seus e de sua familia que foram gravados pelo Danilo.</p>
+      </div>
+      <div class="intro-logo">
+        <img src="imagens/george.png" alt="Logo Miguel" />
+      </div>
+    </section>
+
+    <section class="catalogo">
+      <h2>Catálogo de Fitas</h2>
+      <div class="grid">
+        <a class="filme" href="reproducao.html?video=Bike.mp4">
+          <img src="imagens/Miguel.jpg" alt="Aniversário B" />
+          <div class="filme-title">Aniversário B.</div>
+        </a>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

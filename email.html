@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Assine o VHS Antigos</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0026d19d;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .background-img {
+      position: absolute;
+      top: -18%;
+      left: -5%;
+      width: 150%;
+      height: 150%;
+      background: url('imagens/daniel_fundo.jpg') no-repeat center center;
+      background-size: cover;
+      filter: blur(8px) brightness(0.4);
+      transform: rotate(-5deg);
+      z-index: -2;
+      animation: vhsEffect 3s infinite ease-in-out;
+    }
+
+    @keyframes vhsEffect {
+      0%, 100% {
+        opacity: 1;
+        filter: blur(8px) brightness(0.4);
+        transform: rotate(-5deg) scale(1);
+      }
+      50% {
+        opacity: 0.7;
+        filter: blur(9px) brightness(0.35);
+        transform: rotate(-5deg) translateX(2px) scale(1.01);
+      }
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background-color: #002ab3;
+    }
+
+    .user-icon img {
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+    }
+
+    .user-icon:hover img {
+      transform: scale(1.1);
+    }
+
+    .popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #222;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #000;
+      display: none;
+      z-index: 1000;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .intro {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .intro-texto {
+      max-width: 600px;
+    }
+
+    .intro-texto h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .intro-texto p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+
+    .intro-logo img {
+      max-width: 500px;
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+    }
+
+    .catalogo {
+      margin-top: 40px;
+    }
+
+    .catalogo h2 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Tamanho de laterais */
+      gap: 20px; /* Grosso ou não*/
+    }
+
+    .filme {
+      position: relative;
+      height: 270px;
+      border-radius: 5px;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.3s ease, border 0.3s ease;
+    }
+
+    .filme img {
+      width: 90%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .filme:hover {
+      transform: scale(1.08);
+      border: 1.5px solid white;
+    }
+        footer {
+      background-color: #111;
+      color: #aaa;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <audio src="audio/m_jd2015_titlepageverylow.ogg" autoplay loop></audio>
+
+  <div class="background-img"></div>
+
+  <header>
+    <h1>Assinar</h1>
+    <div class="user-icon" onclick="mostrarLogout()">
+    </div>
+  </header>
+
+  <div class="popup" id="logoutPopup">
+    Voltando para tela inicial...
+  </div>
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>Assine o VHS Antigos hoje!</title>
+</head>
+<body>
+  <div class="container">
+    <section class="intro">
+      <div class="intro-texto">
+        <h1>Eita, só por E-mail</h1>
+        <p>Para poder realizar uma assinatura, é necessário entrar em contato com meu email. O motivo é bem simples, esse não é um site para lucro, mas sim para lembranças da família, sem qualquer tipo de pagamento...</p>
+        </p>
+      </div>
+      <div class="intro-logo">
+        <a href="https://danilojorge12.github.io/vhsantigo/index.html" target="_blank">
+          <img src="imagens/Background.png" alt="Mural">
+        </a>
+
+  <footer> 
+    <p>&copy; 2025 VHS Antigos</p>
+    <p>Desenvolvido por Danilo Jorge</p>
+  </footer>
+</body>
+</html>

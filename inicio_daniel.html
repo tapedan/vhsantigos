@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>VHS Antigos - Catálogo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #000;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .background-img {
+      position: absolute;
+      top: -18%;
+      left: -5%;
+      width: 150%;
+      height: 150%;
+      background: url('imagens/daniel_fundo.jpg') no-repeat center center;
+      background-size: cover;
+      filter: blur(8px) brightness(0.4);
+      transform: rotate(-5deg);
+      z-index: -2;
+      animation: vhsEffect 3s infinite ease-in-out;
+    }
+
+    @keyframes vhsEffect {
+      0%, 100% {
+        opacity: 1;
+        filter: blur(8px) brightness(0.4);
+        transform: rotate(-5deg) scale(1);
+      }
+      50% {
+        opacity: 0.7;
+        filter: blur(9px) brightness(0.35);
+        transform: rotate(-5deg) translateX(2px) scale(1.01);
+      }
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background-color: #111;
+      opacity: 0; /* começa invisível */
+      transition: opacity 0.5s ease;
+    }
+
+    .user-icon img {
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+    }
+
+    .user-icon:hover img {
+      transform: scale(1.1);
+    }
+
+    .popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #222;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #000;
+      display: none;
+      z-index: 1000;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .intro {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .intro-texto {
+      max-width: 600px;
+    }
+
+    .intro-texto h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      opacity: 0; /* começa invisível */
+    }
+
+    .intro-texto p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      opacity: 0; /* começa invisível */
+    }
+
+    .intro-logo img {
+      max-width: 500px;
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      opacity: 0; /* começa invisível */
+    }
+
+    .catalogo {
+      margin-top: 40px;
+    }
+
+    .catalogo h2 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 20px;
+    }
+
+    .filme {
+      position: relative;
+      height: 270px;
+      border-radius: 5px;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.3s ease, border 0.3s ease;
+    }
+
+    .filme img {
+      width: 90%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .filme:hover {
+      transform: scale(1.08);
+      border: 1.5px solid white;
+    }
+
+    footer {
+      background-color: #111;
+      color: #aaa;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 0.9rem;
+    }
+
+    /* ANIMAÇÃO DE ENTRADA */
+    #entrada-vip {
+      position: fixed;
+      inset: 0;
+      background: transparent;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    .fundo-escuro {
+      position: absolute;
+      inset: 0;
+      background: black;
+      opacity: 1;
+      animation: sumirTela 1.5s ease forwards;
+    }
+
+    .texto-unlimited {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: yellow;
+      text-shadow: 0 0 20px #fff;
+      opacity: 0;
+      animation: entrarTexto 0.5s 0.3s ease-out forwards,
+                 subirTexto 1s 1.2s ease forwards;
+    }
+
+    @keyframes sumirTela {
+      0% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    @keyframes entrarTexto {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+      100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    @keyframes subirTexto {
+      0% { top: 50%; transform: translate(-50%, -50%); }
+      100% { top: 20px; transform: translate(-50%, 0); }
+    }
+
+    /* Fade in anim */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .fade-in {
+      animation: fadeIn 2.5s forwards;
+    }
+  </style>
+  <script>
+    function mostrarLogout() {
+      const popup = document.getElementById("logoutPopup");
+      popup.style.display = "block";
+      setTimeout(() => {
+        window.location.href = "index.html";
+      }, 2000);
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      // Aparecer header após animação
+      setTimeout(() => {
+        document.querySelector("header").style.opacity = "1";
+        const entrada = document.getElementById("entrada-vip");
+        if (entrada) entrada.remove();
+      }, 1000);
+
+      setTimeout(() => {
+        document.body.classList.add("show");
+      }, 1500);
+
+      // Fade in com atraso de 2.5 segundos
+      setTimeout(() => {
+        const tituloIntro = document.querySelector(".intro-texto h1");
+        const paragrafoIntro = document.querySelector(".intro-texto p");
+        const imgIntro = document.querySelector(".intro-logo img");
+
+        if (tituloIntro) tituloIntro.classList.add("fade-in");
+        if (paragrafoIntro) paragrafoIntro.classList.add("fade-in");
+        if (imgIntro) imgIntro.classList.add("fade-in");
+      }, 1000);
+    });
+  </script>
+</head>
+<body>
+  <!-- EFEITO DE ENTRADA VIP -->
+  <div id="entrada-vip">
+    <div class="fundo-escuro"></div>
+    <div class="texto-unlimited">UNLIMITED ACCESS 🟡</div>
+  </div>
+
+  <audio src="audio/m_jd2015_titlepageverylow.ogg" autoplay loop></audio>
+  <div class="background-img"></div>
+
+  <header>
+    <h1 id="titulo-header">VHS Antigos  |  Unlimited Access 🟡</h1>
+    <div class="user-icon" onclick="mostrarLogout()">
+      <img src="imagens/Daniel avatar.jpg" alt="Usuário">
+    </div>
+  </header>
+
+  <div class="popup" id="logoutPopup">
+    Você está sendo desconectado da sua conta...
+  </div>
+
+  <div class="container">
+    <section class="intro">
+      <div class="intro-texto">
+        <h1>VIAGENS DIVERSAS</h1>
+        <p>Uma das maiores gravações já lançadas neste site, Viagens Diversas reúne registros de passeios para lugares bem conhecidos, como Campos do Jordão e Caraguatatuba. Esta última se destaca por ter sido feita na companhia especial dos vizinhos da rua!</p>
+      </div>
+      <div class="intro-logo">
+        <a href="https://drive.google.com/file/d/1bZrQeubHH9rFIdgNv8bYEfZlfdRlV7z1/view?usp=drive_link" target="_blank">
+          <img src="imagens/Capa_Viagens_Diversas.png" alt="Mural">
+        </a>
+      </div>
+    </section>
+
+    <section class="catalogo">
+      <h2>Recém gravado | NOVO</h2>
+      <div class="grid">
+        <!-- Fitas -->
+      </div>
+    </section>
+  </div>
+
+  <footer> 
+    <p>&copy; 2025 VHS Antigos</p>
+    <p>Desenvolvido por Danilo Jorge</p>
+    <p>Daniel, você possui assinatura de seus conteúdos de forma vitalícia,</p>
+    <p>com resgate de gift card original</p>
+  </footer>
+</body>
+</html>

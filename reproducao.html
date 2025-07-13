@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>VHS Antigos - Reprodução</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      position: relative;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    body.fade-in { opacity: 1; }
+
+    .voltar {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 26px;
+      color: white;
+      text-decoration: none;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 10px 16px;
+      border-radius: 10px;
+      transition: background 0.2s ease;
+    }
+
+    .voltar:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .video-container {
+      width: 90%;
+      max-width: 1200px;
+    }
+
+    .video-container video {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+  <script>
+    function getVideoName() {
+      const params = new URLSearchParams(window.location.search);
+      return params.get("video") || "aniversario_b.mp4";
+    }
+
+    window.onload = function () {
+      document.body.classList.add('fade-in');
+      const video = document.getElementById("videoPlayer");
+      video.src = "videos/" + getVideoName();
+    }
+  </script>
+</head>
+<body>
+<a href="inicio.html" class="voltar">&#8592;</a>
+<div class="video-container">
+  <video id="videoPlayer" controls></video>
+</div>
+</body>
+</html>
