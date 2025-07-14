@@ -2,16 +2,12 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
-  <title>VHS Antigos - Catálogo</title>
+  <title>VHS Lembranças</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-    }
-
-    html, body {
-      height: 100%;
     }
 
     body {
@@ -20,8 +16,6 @@
       font-family: Arial, sans-serif;
       overflow-x: hidden;
       position: relative;
-      display: flex;
-      flex-direction: column;
     }
 
     .background-img {
@@ -30,7 +24,7 @@
       left: -5%;
       width: 150%;
       height: 150%;
-      background: url('imagens/bia_fundo.jpg') no-repeat center center;
+      background: url('imagens/bia-fundo.jpg') no-repeat center center;
       background-size: cover;
       filter: blur(8px) brightness(0.4);
       transform: rotate(-5deg);
@@ -57,6 +51,8 @@
       align-items: center;
       padding: 15px 30px;
       background-color: #111;
+      opacity: 0; /* começa invisível */
+      transition: opacity 0.5s ease;
     }
 
     .user-icon img {
@@ -90,7 +86,6 @@
       padding: 40px 20px;
       position: relative;
       z-index: 1;
-      flex: 1;
     }
 
     .intro {
@@ -108,21 +103,25 @@
     .intro-texto h1 {
       font-size: 2.5rem;
       margin-bottom: 20px;
+      opacity: 0; /* começa invisível */
     }
 
     .intro-texto p {
       font-size: 1.1rem;
       line-height: 1.6;
+      opacity: 0; /* começa invisível */
     }
 
     .intro-logo img {
       max-width: 500px;
       width: 100%;
       height: auto;
+      border-radius: 12px;
+      opacity: 0; /* começa invisível */
     }
 
     .catalogo {
-      margin-top: 70px;
+      margin-top: 40px;
     }
 
     .catalogo h2 {
@@ -164,22 +163,115 @@
       padding: 10px 0;
       font-size: 0.9rem;
     }
+
+    /* ANIMAÇÃO DE ENTRADA */
+    #entrada-vip {
+      position: fixed;
+      inset: 0;
+      background: transparent;
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    .fundo-escuro {
+      position: absolute;
+      inset: 0;
+      background: black;
+      opacity: 1;
+      animation: sumirTela 2.5s ease forwards;
+    }
+
+    .texto-unlimited {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: rgb(255, 0, 212);
+      text-shadow: 0 0 20px #ffffff8a;
+      opacity: 0;
+      animation: entrarTexto 0.5s 0.3s ease-out forwards,
+                 subirTexto 1s 1.2s ease forwards;
+    }
+
+    @keyframes sumirTela {
+      0% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    @keyframes entrarTexto {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+      100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    @keyframes subirTexto {
+      0% { top: 50%; transform: translate(-50%, -50%); }
+      100% { top: 20px; transform: translate(-50%, 0); }
+    }
+
+    /* Fade in anim */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .fade-in {
+      animation: fadeIn 2.5s forwards;
+    }
   </style>
   <script>
     function mostrarLogout() {
       const popup = document.getElementById("logoutPopup");
       popup.style.display = "block";
       setTimeout(() => {
-        window.location.href = "login.html";
+        window.location.href = "index.html";
       }, 2000);
     }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      // Aparecer header após animação
+      setTimeout(() => {
+        document.querySelector("header").style.opacity = "1";
+        const entrada = document.getElementById("entrada-vip");
+        if (entrada) entrada.remove();
+      }, 2000);
+
+      setTimeout(() => {
+        document.body.classList.add("show");
+      }, 1500);
+
+      // Fade in com atraso de 2.5 segundos
+      setTimeout(() => {
+        const tituloIntro = document.querySelector(".intro-texto h1");
+        const paragrafoIntro = document.querySelector(".intro-texto p");
+        const imgIntro = document.querySelector(".intro-logo img");
+        const catalogo2 = document.querySelector(".catalogo h2");
+        const grid = document.querySelector(".grid");
+        const catalogo = document.querySelector(".catalogo");
+
+        if (tituloIntro) tituloIntro.classList.add("fade-in");
+        if (paragrafoIntro) paragrafoIntro.classList.add("fade-in");
+        if (imgIntro) imgIntro.classList.add("fade-in");
+        if (catalogo) tituloIntro.classList.add("fade-in");
+        if (grid) paragrafoIntro.classList.add("fade-in");
+        if (catalogo2) paragrafoIntro.classList.add("fade-in");
+      }, 1000);
+    });
   </script>
 </head>
 <body>
+  <!-- EFEITO DE ENTRADA VIP -->
+  <div id="entrada-vip">
+    <div class="fundo-escuro"></div>
+    <div class="texto-unlimited">Olá Beatriz! 👋</div>
+  </div>
+
+  <audio src="audio/m_jd2015_titlepageverylow.ogg" autoplay loop></audio>
   <div class="background-img"></div>
 
   <header>
-    <h1>VHS Lembranças</h1>
+    <h1>VHS Lembranças | Beatriz Valle Jorge</h1>
     <div class="user-icon" onclick="mostrarLogout()">
       <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Usuário">
     </div>
