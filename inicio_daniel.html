@@ -241,6 +241,15 @@
         document.body.classList.add("show");
       }, 1500);
 
+      window.addEventListener("DOMContentLoaded", () => {
+  const entradaAudio = new Audio("audio/entrada.ogg");
+  setTimeout(() => {
+    entradaAudio.play().catch((e) => {
+      console.warn("Autoplay bloqueado pelo navegador:", e);
+    });
+  }, 300); // Ou ajuste o tempo que quiser
+});
+
       // Fade in com atraso de 2.5 segundos
       setTimeout(() => {
         const tituloIntro = document.querySelector(".intro-texto h1");
