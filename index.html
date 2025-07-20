@@ -3,12 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>VHS Antigos - Login</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    /* RESET */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      font-family: 'Courier New', Courier, monospace;
     }
 
     body {
@@ -17,17 +19,17 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      opacity: 0;
-      transition: opacity 3.8s ease;
       overflow: hidden;
       position: relative;
+      opacity: 0;
+      transition: opacity 3.8s ease;
     }
 
     body.fade-in {
       opacity: 1;
     }
 
-    /* Imagem de fundo com efeito VHS */
+    /* FUNDO VHS */
     .background-img {
       position: absolute;
       top: -18%;
@@ -43,7 +45,6 @@
       animation: vhsEffect 3s infinite ease-in-out;
     }
 
-    /* Camada escura transparente por cima da imagem */
     .overlay-dark {
       position: absolute;
       top: 0;
@@ -54,6 +55,7 @@
       z-index: -1;
     }
 
+    /* LOGIN CONTAINER */
     .login-container {
       background-color: #5170ff;
       padding: 40px;
@@ -64,44 +66,9 @@
       position: relative;
       z-index: 1;
     }
-    .btn-assinar {
-       display: inline-block;
-      margin-top: 40px;
-      padding: 10px 30px;
-      background-color: #0a0097;
-      color: #ffffff;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 16px;
-      transition: background-color 0.2s ease;
-      margin-left: 10px;
-    }
-
-    .btn-assinar:hover {
-      background-color: #1100ff;
-}
-      @media screen and (max-width: 768px) {
-    .login-container {
-      width: 90%;
-      padding: 20px;
-    }
-
-    .login-container input,
-    .login-container button {
-      font-size: 20px;
-      padding: 8px 20px;
-    }
-
-    .btn-assinar {
-      font-size: 14px;
-      padding: 8px 20px;
-    }
-}
-
 
     .login-container img {
-      width: 360px;
+      width: 260px;
       margin-bottom: 20px;
       filter: grayscale(0%);
     }
@@ -110,7 +77,7 @@
       color: #ccc;
       font-size: 18px;
       display: block;
-      margin-top: 25px;
+      margin-top: 20px;
       text-align: left;
     }
 
@@ -142,6 +109,24 @@
       background-color: #fff;
     }
 
+    .btn-assinar {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 30px;
+      background-color: #0a0097;
+      color: #ffffff;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+      transition: background-color 0.2s ease;
+      margin-left: 10px;
+    }
+
+    .btn-assinar:hover {
+      background-color: #1100ff;
+    }
+
     .erro-msg {
       color: #ffbaba;
       background: #d8000c;
@@ -164,11 +149,10 @@
       100% { transform: translateX(0); }
     }
 
-    /* Animação VHS - piscar e mover */
     @keyframes vhsEffect {
       0%, 25% {
         filter: blur(8px) brightness(0.4);
-        transform: rotate(-2deg) translate(2, 0) scale(2);
+        transform: rotate(-2deg) translate(2px, 0) scale(2);
         opacity: 1;
       }
       20% {
@@ -186,14 +170,62 @@
         transform: rotate(-2deg) translateX(-1px) scale(1.005);
       }
     }
+
+    /* === MOBILE RESPONSIVO === */
+    @media screen and (max-width: 768px) {
+      body {
+        flex-direction: column;
+        height: auto;
+        padding: 20px;
+      }
+
+      .login-container {
+        width: 90%;
+        max-width: 350px;
+        padding: 30px 20px;
+        margin: 40px auto;
+      }
+
+      .login-container img {
+        width: 180px;
+        margin-bottom: 15px;
+      }
+
+      .login-container label {
+        font-size: 14px;
+      }
+
+      .login-container input {
+        font-size: 16px;
+        padding: 10px;
+      }
+
+      .login-container button,
+      .btn-assinar {
+        width: 100%;
+        font-size: 16px;
+        padding: 12px;
+        margin-top: 12px;
+      }
+
+      .background-img {
+        top: -30%;
+        left: -30%;
+        width: 160%;
+        height: 160%;
+        transform: rotate(-3deg);
+      }
+
+      .overlay-dark {
+        background: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(4px);
+      }
+    }
   </style>
 </head>
 <body class="fade-in">
-  <!-- Fundo com animação VHS -->
   <div class="background-img"></div>
   <div class="overlay-dark"></div>
-
-</body>
 
   <div class="login-container">
     <img src="imagens/logo-vhs.png" alt="VHS Logo">
@@ -202,7 +234,7 @@
       <input type="text" id="usuario" name="usuario" placeholder="Quem é você?" required>
 
       <label for="senha">Senha:</label>
-      <input type="password" id="senha" name="senha" placeholder="Qual é a senha" required>
+      <input type="password" id="senha" name="senha" placeholder="Qual é a senha?" required>
 
       <button type="submit" id="loginBtn">Assistir</button>
       <a href="assinar.html" class="btn-assinar">Assinar</a>
@@ -221,14 +253,13 @@
       const senha = document.getElementById("senha").value;
       const erroMsg = document.getElementById("erroLogin");
       const botao = document.getElementById("loginBtn");
-      const assina = document.getElementById("loginBtn");
 
       const logins = {
         "bia":    { senha: "1200", pagina: "inicio_bia.html" },
         "miguel": { senha: "3232", pagina: "inicio_miguel.html" },
-        "0":  { senha: "0", pagina: "inicio_bia.html" },
-        "daniel":  { senha: "2707", pagina: "inicio_daniel.html" },
-        "fatima":  { senha: "senhora", pagina: "inicio_fatima.html" }
+        "0":      { senha: "0",    pagina: "inicio_bia.html" },
+        "daniel": { senha: "2707", pagina: "inicio_daniel.html" },
+        "fatima": { senha: "senhora", pagina: "inicio_fatima.html" }
       };
 
       if (logins[usuario] && logins[usuario].senha === senha) {
