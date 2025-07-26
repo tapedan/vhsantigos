@@ -241,6 +241,23 @@
         document.body.classList.add("show");
       }, 1500);
 
+      // TOCAR ÁUDIO DE ENTRADA
+      const audio = document.getElementById('audioEntrada');
+      setTimeout(() => {
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((error) => {
+            console.log("Navegador bloqueou o autoplay com som. Aguardando interação...");
+          });
+        }
+      }, 0);
+
+      document.addEventListener("click", () => {
+        if (audio.paused) {
+          audio.play().catch(() => {});
+        }
+      }, { once: true });
+
       // Fade in com atraso de 2.5 segundos
       setTimeout(() => {
         const tituloIntro = document.querySelector(".intro-texto h1");
@@ -267,7 +284,7 @@
     <div class="texto-unlimited">Olá Beatriz! 👋</div>
   </div>
 
-  <audio src="audio/m_jd2015_titlepageverylow.ogg" autoplay loop></audio>
+  <audio id="audioEntrada" src="entrada_meme.mp3"></audio>
   <div class="background-img"></div>
 
   <header>
