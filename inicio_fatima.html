@@ -93,12 +93,34 @@
   <!-- Mobile Header -->
   <header class="bg-gray-900 px-4 py-3 flex justify-between items-center sticky top-0 z-40 opacity-0 transition-opacity duration-500">
     <div class="flex items-center">
+      <button id="menuBtn" class="text-white mr-4">
+        <i class="fas fa-bars text-xl"></i>
+      </button>
       <h1 id="titulo-header" class="text-sm font-medium truncate max-w-[180px]">VHS Antigos | Assinatura</h1>
     </div>
     <div class="user-icon" onclick="mostrarLogout()">
       <i class="fas fa-user-circle text-2xl text-gray-300"></i>
     </div>
   </header>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="mobile-menu fixed inset-y-0 right-0 w-64 bg-gray-900 z-50 p-4 overflow-y-auto">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-xl font-bold">Menu</h2>
+      <button id="closeMenuBtn" class="text-white">
+        <i class="fas fa-times text-xl"></i>
+      </button>
+    </div>
+    <nav>
+      <ul class="space-y-4">
+        <li><a href="#" class="block py-2 px-3 rounded hover:bg-gray-800">Início</a></li>
+        <li><a href="#" class="block py-2 px-3 rounded hover:bg-gray-800">Catálogo</a></li>
+        <li><a href="#" class="block py-2 px-3 rounded hover:bg-gray-800">Assinatura</a></li>
+        <li><a href="#" class="block py-2 px-3 rounded hover:bg-gray-800">Sobre</a></li>
+        <li><a href="#" class="block py-2 px-3 rounded hover:bg-gray-800">Contato</a></li>
+      </ul>
+    </nav>
+  </div>
 
   <!-- Logout Popup -->
   <div id="logoutPopup" class="popup fixed top-5 right-5 bg-gray-800 text-white px-4 py-3 rounded-lg shadow-lg hidden z-50">
