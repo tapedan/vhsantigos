@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VHS Antigos - Catálogo</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     @keyframes vhsEffect {
       0%, 100% {
@@ -39,16 +40,21 @@
       to { opacity: 1; }
     }
 
-    .background-img {
-      position: absolute;
+    @keyframes scanlines {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 -20px; }
+    }
+
+    .vhs-bg {
+      position: fixed;
       top: -18%;
       left: -5%;
       width: 150%;
       height: 150%;
-      background: url('imagens/') no-repeat center center;
+      background: url('') no-repeat center center;
       background-size: cover;
       filter: blur(8px) brightness(0.4);
-      transform: rotate(-5deg);
+      transform: rotate(-1deg);
       z-index: -2;
       animation: vhsEffect 3s infinite ease-in-out;
     }
@@ -57,15 +63,45 @@
       animation: fadeIn 2.5s forwards;
     }
 
-    .filme img {
-      width: 90%;
-      height: 100%;
-      object-fit: cover;
+    .film-card {
+      transition: all 0.3s ease;
+      aspect-ratio: 2/3;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
     }
 
-    .filme:hover {
-      transform: scale(1.08);
-      border: 1.5px solid white;
+    .film-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(255, 0, 0, 0.1) 0%,
+        rgba(0, 255, 255, 0.1) 100%
+      );
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+
+    .film-card:hover {
+      transform: scale(1.05);
+      border-color: rgba(255,255,255,0.5);
+      box-shadow: 0 0 20px rgba(0, 102, 255, 0.5);
+    }
+
+    .film-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .film-card:hover img {
+      transform: scale(1.1);
     }
 
     #entrada-vip {
@@ -94,29 +130,62 @@
       color: rgb(0, 102, 255);
       text-shadow: 0 0 20px #ffffff46;
       opacity: 0;
-      animation: entrarTexto 0.5s 0.3s ease-out forwards, 
-                 subirTexto 1s 1.2s ease forwards;
+      animation: entrarTexto 0.5s 0.3s ease-out forwards,
+                  subirTexto 1s 1.2s ease forwards;
     }
 
     .popup {
       position: fixed;
       top: 20px;
       right: 20px;
-      background-color: #222;
+      background-color: rgba(34, 34, 34, 0.9);
       color: white;
       padding: 15px 20px;
       border-radius: 8px;
-      box-shadow: 0 0 10px #000;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
       display: none;
       z-index: 1000;
+      border-left: 4px solid #0066ff;
+    }
+
+    .vhs-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+      background-size: 100% 2px, 3px 100%;
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.7;
+      animation: scanlines 0.7s linear infinite;
+    }
+
+    .section-title {
+      position: relative;
+      display: inline-block;
+      padding-bottom: 5px;
+    }
+
+    .section-title::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #0066ff, transparent);
     }
 
     @media (max-width: 640px) {
       .texto-unlimited {
         font-size: 1.8rem;
       }
-      
-      .background-img {
+            
+      .vhs-bg {
         top: -10%;
         left: -10%;
         width: 120%;
@@ -182,140 +251,253 @@
     <div class="texto-unlimited">EAE, DANIEL  😄🎥</div>
   </div>
 
+  <!-- EFEITO VHS -->
+  <div class="vhs-overlay"></div>
+
   <!-- ÁUDIO DE ENTRADA -->
   <audio id="audioEntrada" src="entrada_meme.mp3"></audio>
 
-  <div class="background-img"></div>
+  <div class="vhs-bg"></div>
 
-  <header class="flex justify-between items-center p-4 bg-[#111] opacity-0 transition-opacity duration-500 ease">
-    <h1 id="titulo-header" class="text-sm sm:text-base md:text-lg lg:text-xl">VHS Antigos  |  Você possui acesso ILIMITADO  🟡</h1>
-    <div class="user-icon" onclick="mostrarLogout()">
-      <img src="imagens/Daniel avatar.jpg" alt="Usuário" class="w-8 h-8 rounded-full cursor-pointer transition-transform duration-300 ease hover:scale-110">
+  <header class="bg-black/80 backdrop-blur-sm px-4 py-3 flex justify-between items-center sticky top-0 z-40 opacity-0 transition-opacity duration-500 border-b border-gray-800">
+    <div class="flex items-center gap-2">
+      <i class="fas fa-video text-yellow-400"></i>
+      <h1 id="titulo-header" class="text-sm font-medium truncate max-w-[180px] sm:max-w-none">VHS Antigos | Acesso ILIMITADO  🟡</h1>
+    </div>
+    <div class="user-icon flex items-center gap-2" onclick="mostrarLogout()">
+      <span class="hidden sm:inline text-sm text-gray-300">Daniel</span>
+      <img src="imagens/Daniel avatar.jpg" alt="Usuário" class="w-8 h-8 rounded-full cursor-pointer transition-transform duration-300 ease hover:scale-110 border border-yellow-400">
     </div>
   </header>
 
   <div class="popup" id="logoutPopup">
-    Saindo da sua conta Daniel...
+    <i class="fas fa-spinner fa-spin mr-2"></i> Saindo da sua conta Daniel...
   </div>
 
   <div class="container mx-auto px-4 py-10 relative z-10">
-    <section class="intro flex flex-col md:flex-row justify-between items-center gap-8">
-      <div class="intro-texto max-w-[600px]">
-        <h1 class="text-3xl sm:text-4xl mb-5 opacity-0">VIAGENS DIVERSAS</h1>
-        <p class="text-base sm:text-lg leading-relaxed opacity-0">
+    <section class="intro flex flex-col md:flex-row justify-between items-center gap-8 mb-16">
+      <div class="intro-texto max-w-[600px] order-2 md:order-1">
+        <h1 class="text-3xl sm:text-4xl mb-5 opacity-0 font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">VIAGENS DIVERSAS</h1>
+        <p class="text-base sm:text-lg leading-relaxed opacity-0 text-gray-300">
           Uma das maiores gravações já lançadas neste site, Viagens Diversas reúne registros de passeios para lugares bem conhecidos, como Campos do Jordão e Caraguatatuba. Esta última se destaca por ter sido feita na companhia especial dos vizinhos da rua!
         </p>
+        <div class="mt-6 opacity-0 fade-in">
+          <a href="https://drive.google.com/file/d/1bZrQeubHH9rFIdgNv8bYEfZlfdRlV7z1/view?usp=drive_link" target="_blank" class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md transition-colors duration-300">
+            <i class="fas fa-play mr-2"></i> Assistir agora
+          </a>
+        </div>
       </div>
-      <div class="intro-logo w-full md:w-auto">
-        <a href="https://drive.google.com/file/d/1bZrQeubHH9rFIdgNv8bYEfZlfdRlV7z1/view?usp=drive_link" target="_blank">
-          <img src="imagens/Capa_Viagens_Diversas.png" alt="Mural" class="max-w-full rounded-xl opacity-0 w-full md:max-w-[500px]">
+      <div class="intro-logo w-full md:w-auto order-1 md:order-2">
+        <a href="https://drive.google.com/file/d/1bZrQeubHH9rFIdgNv8bYEfZlfdRlV7z1/view?usp=drive_link" target="_blank" class="block relative group">
+          <div class="absolute inset-0 bg-blue-600/20 group-hover:bg-blue-600/30 rounded-xl transition-all duration-500 z-10"></div>
+          <img src="imagens/Capa_Viagens_Diversas.png" alt="Mural" class="max-w-full rounded-xl opacity-0 w-full md:max-w-[500px] border-2 border-gray-700 group-hover:border-blue-500 transition-all duration-300">
+          <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent rounded-b-xl z-20">
+            <div class="flex items-center gap-2">
+              <div class="bg-yellow-400 text-black px-2 py-1 rounded text-xs font-bold">NOVO</div>
+              <div class="text-white text-sm">Disponível em HD</div>
+            </div>
+          </div>
         </a>
       </div>
     </section>
 
     <section class="catalogo mt-10">
-      <h2 class="text-xl sm:text-2xl mb-3">Recem gravado | NOVO</h2>
+      <h2 class="text-xl sm:text-2xl mb-6 section-title">Recem gravado | NOVO</h2>
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1bZrQeubHH9rFIdgNv8bYEfZlfdRlV7z1/view?usp=drive_link" target="_blank" rel="noopener noreferrer">
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1bZrQeubHH9rFIdgNv8bYEfZlfdRlV7z1/view?usp=drive_link" target="_blank">
           <img src="imagens/Viagens_Diversas.png" alt="Viagens Diversas" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Viagens Diversas</h3>
+            <div class="flex items-center gap-1 text-xs text-yellow-400">
+              <i class="fas fa-star"></i>
+              <span>Destaque</span>
+            </div>
+          </div>
         </a>
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1GMm_9Wakn-IhS8HoSF6gMIoCVgxqRdsP/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1GMm_9Wakn-IhS8HoSF6gMIoCVgxqRdsP/view?usp=sharing" target="_blank">
           <img src="imagens/Festa_aleatoria.png" alt="Festa aleatoria" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Festa Aleatória</h3>
+          </div>
         </a>
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1-uv01RGdNyz7F5XpBqJwHNRJHTPy5rSh/view?usp=sharing">
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1-uv01RGdNyz7F5XpBqJwHNRJHTPy5rSh/view?usp=sharing" target="_blank">
           <img src="imagens/friendskart.png" alt="Friends Kart" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Friends Kart</h3>
+          </div>
         </a>
       </div>
     </section>
 
-    <section class="catalogo mt-10">
-      <h2 class="text-xl sm:text-2xl mb-3">Viagens</h2>
+    <section class="catalogo mt-16">
+      <h2 class="text-xl sm:text-2xl mb-6 section-title">Viagens</h2>
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1ATJx1JVTZa_t8JbtlY8oszHS18a6549E/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/aparecida_norte.png" alt="Formatura Sesi" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1ATJx1JVTZa_t8JbtlY8oszHS18a6549E/view?usp=sharing" target="_blank">
+          <img src="imagens/aparecida_norte.png" alt="Aparecida" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Aparecida Norte</h3>
+          </div>
         </a>
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1RLmZOhQA67AF0Gp41_JMq_Iom_pvdqtC/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/Porto_Seguro.png" alt="Format Crisma" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1RLmZOhQA67AF0Gp41_JMq_Iom_pvdqtC/view?usp=sharing" target="_blank">
+          <img src="imagens/Porto_Seguro.png" alt="Porto Seguro" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Porto Seguro</h3>
+          </div>
         </a>
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1QTJypY4I8zlWWclKWEsKe8--ierXU8bG/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/Pesqueiro_Franca.png" alt="Format Crisma" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1QTJypY4I8zlWWclKWEsKe8--ierXU8bG/view?usp=sharing" target="_blank">
+          <img src="imagens/Pesqueiro_Franca.png" alt="Franca" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Pesqueiro Franca</h3>
+          </div>
         </a>
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1iB7U4ZJ-oZIoz0eDW9wtZ3X6Z3rYh8kU/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/Caldas_novas.png" alt="Format Crisma" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1iB7U4ZJ-oZIoz0eDW9wtZ3X6Z3rYh8kU/view?usp=sharing" target="_blank">
+          <img src="imagens/Caldas_novas.png" alt="Caldas Novas" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Caldas Novas</h3>
+          </div>
         </a>
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1AHQ3W0Se_n-uOpH--Zqi7PIEXq-vzLSk/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/SandraMarquinhos.png" alt="Format Crisma" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1AHQ3W0Se_n-uOpH--Zqi7PIEXq-vzLSk/view?usp=sharing" target="_blank">
+          <img src="imagens/SandraMarquinhos.png" alt="Sandra e Marquinhos na praia" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Sandra e Marquinhos</h3>
+          </div>
         </a>
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1Cq0ngPSX5GxGlzu97fPDgUeGDPeQPU9W/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/brasilia.png" alt="Format Crisma" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1Cq0ngPSX5GxGlzu97fPDgUeGDPeQPU9W/view?usp=sharing" target="_blank">
+          <img src="imagens/brasilia.png" alt="Brasilia" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Brasília</h3>
+          </div>
         </a>
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1Jt3vVJ1l0kbRXCQmHoF63zAwfGgDeQAQ/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/holambra.png" alt="Format Crisma" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1Jt3vVJ1l0kbRXCQmHoF63zAwfGgDeQAQ/view?usp=sharing" target="_blank">
+          <img src="imagens/holambra.png" alt="Holambra" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Holambra</h3>
+          </div>
         </a>
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1CvozbKc-vHz_arz-wWkvG5tBrYvv8Z-6/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/Salão_Automovel.png" alt="Format Crisma" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1CvozbKc-vHz_arz-wWkvG5tBrYvv8Z-6/view?usp=sharing" target="_blank">
+          <img src="imagens/Salão_Automovel.png" alt="Salão do automovel" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Salão Automóvel</h3>
+          </div>
         </a>
       </div>
     </section>
 
-    <section class="catalogo mt-10">
-      <h2 class="text-xl sm:text-2xl mb-3">Festejando</h2>
+    <section class="catalogo mt-16">
+      <h2 class="text-xl sm:text-2xl mb-6 section-title">Festejando</h2>
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1GMm_9Wakn-IhS8HoSF6gMIoCVgxqRdsP/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/Festa_aleatoria.png" alt="Aniversário B" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1GMm_9Wakn-IhS8HoSF6gMIoCVgxqRdsP/view?usp=sharing" target="_blank">
+          <img src="imagens/Festa_aleatoria.png" alt="Festa Aleatória" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Festa Aleatória</h3>
+          </div>
         </a>
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1-fewS__DjE8EbcNizy2w3w1XPCGKqBD-/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/Dia_das_mães.png" alt="Aniversário Zé" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1-fewS__DjE8EbcNizy2w3w1XPCGKqBD-/view?usp=sharing" target="_blank">
+          <img src="imagens/Dia_das_mães.png" alt="Dia das mães" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Dia das Mães</h3>
+          </div>
         </a>
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1kF0a7vPP00zyg4FBSElxOS4aieiwxlyj/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/Fim_de_91.png" alt="Nossa S. Dores" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1kF0a7vPP00zyg4FBSElxOS4aieiwxlyj/view?usp=sharing" target="_blank">
+          <img src="imagens/Fim_de_91.png" alt="Fim de 1991" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Fim de 1991</h3>
+          </div>
         </a>
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/11ySbGQxtni_7xnRPERhiG--IDDf1mvDO/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/Surpresa_Fatima.png" alt="Format Crisma" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/11ySbGQxtni_7xnRPERhiG--IDDf1mvDO/view?usp=sharing" target="_blank">
+          <img src="imagens/Surpresa_Fatima.png" alt="Surpresa fátima" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Surpresa Fátima</h3>
+          </div>
         </a>
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1IcV0FEqvFjnaUBeHyZTagmYA0TkEiFxr/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/natal_94.png" alt="Format Crisma" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1IcV0FEqvFjnaUBeHyZTagmYA0TkEiFxr/view?usp=sharing" target="_blank">
+          <img src="imagens/natal_94.png" alt="Natal de 1994" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Natal 1994</h3>
+          </div>
         </a>
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1D-Ym6GVoOXt6amy7llMvQ1pi65vvrGe9/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/daniel_10.png" alt="Format Crisma" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1D-Ym6GVoOXt6amy7llMvQ1pi65vvrGe9/view?usp=sharing" target="_blank">
+          <img src="imagens/daniel_10.png" alt="Niver Daniel 10 anos" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Daniel 10 anos</h3>
+          </div>
         </a>
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1D-Ym6GVoOXt6amy7llMvQ1pi65vvrGe9/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/Daniel_15_anos.png" alt="Format Crisma" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1D-Ym6GVoOXt6amy7llMvQ1pi65vvrGe9/view?usp=sharing" target="_blank">
+          <img src="imagens/Daniel_15_anos.png" alt="Niver Daniel 15 anos" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Daniel 15 anos</h3>
+          </div>
         </a>
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1rVRn4kOBpMqgVhcaupc7weevELFryym3/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/daniel_18.png" alt="Format Crisma" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1rVRn4kOBpMqgVhcaupc7weevELFryym3/view?usp=sharing" target="_blank">
+          <img src="imagens/daniel_18.png" alt="Niver Daniel 18 anos" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Daniel 18 anos</h3>
+          </div>
         </a>
       </div>
     </section>
 
-    <section class="catalogo mt-10">
-      <h2 class="text-xl sm:text-2xl mb-3">Amigos e vizinhos</h2>
+    <section class="catalogo mt-16">
+      <h2 class="text-xl sm:text-2xl mb-6 section-title">Amigos e vizinhos</h2>
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1GMm_9Wakn-IhS8HoSF6gMIoCVgxqRdsP/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/Festa_aleatoria.png" alt="Aniversário B" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1GMm_9Wakn-IhS8HoSF6gMIoCVgxqRdsP/view?usp=sharing" target="_blank">
+          <img src="imagens/Festa_aleatoria.png" alt="Festa Aleatória" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Festa Aleatória</h3>
+          </div>
         </a>
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1kF0a7vPP00zyg4FBSElxOS4aieiwxlyj/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/Fim_de_91.png" alt="Aniversário Zé" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1kF0a7vPP00zyg4FBSElxOS4aieiwxlyj/view?usp=sharing" target="_blank">
+          <img src="imagens/Fim_de_91.png" alt="Confraternização de 1991" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Confraternização 1991</h3>
+          </div>
         </a>
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1AHQ3W0Se_n-uOpH--Zqi7PIEXq-vzLSk/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/SandraMarquinhos.png" alt="Nossa S. Dores" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1AHQ3W0Se_n-uOpH--Zqi7PIEXq-vzLSk/view?usp=sharing" target="_blank">
+          <img src="imagens/SandraMarquinhos.png" alt="Sandra e Marquinhos na praia" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Sandra e Marquinhos</h3>
+          </div>
         </a>
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1D-Ym6GVoOXt6amy7llMvQ1pi65vvrGe9/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/Daniel_15_anos.png" alt="Format Crisma" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1D-Ym6GVoOXt6amy7llMvQ1pi65vvrGe9/view?usp=sharing" target="_blank">
+          <img src="imagens/daniel_10.png" alt="Niver Daniel 10 anos" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Daniel 10 anos</h3>
+          </div>
         </a>
-        <a class="filme relative h-[200px] sm:h-[270px] rounded border-2 border-transparent cursor-pointer overflow-hidden transition-all duration-300 ease" href="https://drive.google.com/file/d/1rVRn4kOBpMqgVhcaupc7weevELFryym3/view?usp=sharing" target="_blank" rel="noopener noreferrer">
-          <img src="imagens/daniel_18.png" alt="Format Crisma" />
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1D-Ym6GVoOXt6amy7llMvQ1pi65vvrGe9/view?usp=sharing" target="_blank">
+          <img src="imagens/Daniel_15_anos.png" alt="Niver Daniel 15 anos" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Daniel 15 anos</h3>
+          </div>
+        </a>
+        <a class="film-card relative rounded-lg cursor-pointer overflow-hidden" href="https://drive.google.com/file/d/1rVRn4kOBpMqgVhcaupc7weevELFryym3/view?usp=sharing" target="_blank">
+          <img src="imagens/daniel_18.png" alt="Niver Daniel 18 anos" />
+          <div class="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/80 to-transparent">
+            <h3 class="text-sm font-medium truncate">Daniel 18 anos</h3>
+          </div>
         </a>
       </div>
     </section>
   </div>
 
-  <footer class="bg-[#111] text-[#aaa] text-center py-3 text-xs sm:text-sm">
-    <p>&copy; 2025 VHS Antigos</p>
-    <p>Desenvolvido por Danilo Jorge</p>
-    <p>Daniel, você possui assinatura de seus conteúdos de forma vitalícia,</p>
-    <p>com resgate de gift card original</p>
+  <footer class="bg-black/80 backdrop-blur-sm text-gray-400 text-center py-6 text-sm border-t border-gray-800 mt-16">
+    <div class="container mx-auto px-4">
+      <p class="mb-2">&copy; 2025 VHS Antigos - Todos os direitos reservados</p>
+      <p class="mb-2">Desenvolvido por Danilo Jorge</p>
+      <p class="text-yellow-400">Daniel, você possui assinatura de seus conteúdos de forma vitalícia,</p>
+      <p class="text-yellow-400">com resgate de gift card original</p>
+      <div class="mt-4 flex justify-center gap-4">
+        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">
+          <i class="fab fa-youtube"></i>
+        </a>
+      </div>
+    </div>
   </footer>
 </body>
 </html>
-
