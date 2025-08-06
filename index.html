@@ -2,169 +2,10 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VHS Antigos - Login</title>
-  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background-color: #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      opacity: 0;
-      transition: opacity 3.8s ease;
-      overflow: hidden;
-      position: relative;
-    }
-
-    body.fade-in {
-      opacity: 1;
-    }
-
-    /* Imagem de fundo com efeito VHS */
-    .background-img {
-      position: absolute;
-      top: -18%;
-      left: -5%;
-      width: 150%;
-      height: 150%;
-      background: url('imagens/fita-vhs-fundo.jpg') no-repeat center center;
-      background-size: cover;
-      filter: blur(8px) brightness(0.4);
-      transform: rotate(-5deg);
-      zoom: 1.4;
-      z-index: -2;
-      animation: vhsEffect 3s infinite ease-in-out;
-    }
-
-    /* Camada escura transparente por cima da imagem */
-    .overlay-dark {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      z-index: -1;
-    }
-
-    .login-container {
-      background-color: #5170ff;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-      text-align: center;
-      width: 500px;
-      position: relative;
-      z-index: 1;
-    }
-    .btn-assinar {
-       display: inline-block;
-      margin-top: 40px;
-      padding: 10px 30px;
-      background-color: #0a0097;
-      color: #ffffff;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 16px;
-      transition: background-color 0.2s ease;
-      margin-left: 10px;
-    }
-
-    .btn-assinar:hover {
-      background-color: #1100ff;
-}
-      @media screen and (max-width: 768px) {
-    .login-container {
-      width: 90%;
-      padding: 20px;
-    }
-
-    .login-container input,
-    .login-container button {
-      font-size: 20px;
-      padding: 8px 20px;
-    }
-
-    .btn-assinar {
-      font-size: 14px;
-      padding: 8px 20px;
-    }
-}
-
-
-    .login-container img {
-      width: 360px;
-      margin-bottom: 20px;
-      filter: grayscale(0%);
-    }
-
-    .login-container label {
-      color: #ccc;
-      font-size: 18px;
-      display: block;
-      margin-top: 25px;
-      text-align: left;
-    }
-
-    .login-container input {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      background-color: #e0e0e0;
-      color: #000;
-      font-size: 16px;
-      margin-top: 5px;
-    }
-
-    .login-container button {
-      margin-top: 20px;
-      padding: 10px 30px;
-      background-color: #ccc;
-      color: #000;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 16px;
-      transition: background-color 0.2s ease;
-    }
-
-    .login-container button:hover {
-      background-color: #fff;
-    }
-
-    .erro-msg {
-      color: #ffbaba;
-      background: #d8000c;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 14px;
-      margin-top: 15px;
-      display: none;
-    }
-
-    .shake {
-      animation: shake 0.4s;
-    }
-
-    @keyframes shake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-6px); }
-      50% { transform: translateX(6px); }
-      75% { transform: translateX(-6px); }
-      100% { transform: translateX(0); }
-    }
-
-    /* Animação VHS - piscar e mover */
     @keyframes vhsEffect {
       0%, 25% {
         filter: blur(8px) brightness(0.4);
@@ -186,34 +27,89 @@
         transform: rotate(-2deg) translateX(-1px) scale(1.005);
       }
     }
+    
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      50% { transform: translateX(6px); }
+      75% { transform: translateX(-6px); }
+      100% { transform: translateX(0); }
+    }
+    
+    .vhs-effect {
+      animation: vhsEffect 3s infinite ease-in-out;
+    }
+    
+    .shake-animation {
+      animation: shake 0.4s;
+    }
+    
+    .fade-in {
+      animation: fadeIn 1s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
   </style>
 </head>
-<body class="fade-in">
-  <!-- Fundo com animação VHS -->
-  <div class="background-img"></div>
-  <div class="overlay-dark"></div>
-
-</body>
-
-  <div class="login-container">
-    <img src="imagens/logo-vhs.png" alt="VHS Logo">
-    <form onsubmit="return verificarLogin()">
-      <label for="usuario">Usuário:</label>
-      <input type="text" id="usuario" name="usuario" placeholder="Quem é você?" required>
-
-      <label for="senha">Senha:</label>
-      <input type="password" id="senha" name="senha" placeholder="Qual é a senha" required>
-
-      <button type="submit" id="loginBtn">Assistir</button>
-      <a href="assinar.html" class="btn-assinar">Assinar</a>
-
-      <div class="erro-msg" id="erroLogin">Usuário ou senha incorretos! 🎞️</div>
+<body class="bg-black h-screen w-full overflow-hidden relative flex items-center justify-center">
+  <!-- Background with VHS effect -->
+  <div class="absolute top-[-18%] left-[-5%] w-[150%] h-[150%] bg-cover bg-center bg-no-repeat bg-[url('imagens/fita-vhs-fundo.jpg')] filter blur-lg brightness-40 transform -rotate-5 scale-140 z-[-2] vhs-effect"></div>
+  
+  <!-- Dark overlay -->
+  <div class="absolute inset-0 bg-black bg-opacity-40 z-[-1]"></div>
+  
+  <!-- Login container -->
+  <div class="bg-[#5170ff] p-8 md:p-10 rounded-xl shadow-lg text-center w-[90%] max-w-md mx-auto relative z-10">
+    <img src="imagens/logo-vhs.png" alt="VHS Logo" class="w-full max-w-[360px] mx-auto mb-5">
+    
+    <form onsubmit="return verificarLogin()" class="space-y-6">
+      <div class="text-left">
+        <label for="usuario" class="block text-gray-300 text-lg mb-1">Usuário:</label>
+        <input type="text" id="usuario" name="usuario" placeholder="Quem é você?" required 
+               class="w-full px-4 py-3 rounded-lg bg-gray-200 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white">
+      </div>
+      
+      <div class="text-left">
+        <label for="senha" class="block text-gray-300 text-lg mb-1">Senha:</label>
+        <input type="password" id="senha" name="senha" placeholder="Qual é a senha" required 
+               class="w-full px-4 py-3 rounded-lg bg-gray-200 text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white">
+      </div>
+      
+      <div class="flex flex-col space-y-4 md:flex-row md:space-y-0 md:space-x-4 justify-center">
+        <button type="submit" id="loginBtn" 
+                class="px-8 py-3 bg-gray-300 text-black font-bold rounded-lg hover:bg-white transition duration-200 w-full md:w-auto">
+          Assistir
+        </button>
+        
+        <a href="assinar.html" 
+           class="px-8 py-3 bg-[#0a0097] text-white font-bold rounded-lg hover:bg-[#1100ff] transition duration-200 text-center w-full md:w-auto">
+          Assinar
+        </a>
+      </div>
+      
+      <div id="erroLogin" class="hidden bg-[#d8000c] text-[#ffbaba] px-4 py-3 rounded-lg text-sm">
+        Usuário ou senha incorretos! 🎞️
+      </div>
     </form>
   </div>
 
   <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      document.body.classList.add('fade-in');
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        document.body.classList.add('fade-in');
+      }, 100);
+      
+      // Adjust background for mobile devices
+      if (window.innerWidth < 768) {
+        const bg = document.querySelector('.vhs-effect');
+        bg.style.top = '-10%';
+        bg.style.left = '-10%';
+        bg.style.width = '120%';
+        bg.style.height = '120%';
+      }
     });
 
     function verificarLogin() {
@@ -221,14 +117,13 @@
       const senha = document.getElementById("senha").value;
       const erroMsg = document.getElementById("erroLogin");
       const botao = document.getElementById("loginBtn");
-      const assina = document.getElementById("loginBtn");
 
       const logins = {
         "bia":    { senha: "1200", pagina: "inicio_bia.html" },
         "miguel": { senha: "3232", pagina: "inicio_miguel.html" },
-        "0":  { senha: "0", pagina: "inicio_bia.html" },
-        "daniel":  { senha: "2007", pagina: "inicio_daniel.html" },
-        "fatima":  { senha: "senhora", pagina: "inicio_fatima.html" }
+        "0":      { senha: "0", pagina: "inicio_bia.html" },
+        "daniel": { senha: "2007", pagina: "inicio_daniel.html" },
+        "fatima": { senha: "senhora", pagina: "inicio_fatima.html" }
       };
 
       if (logins[usuario] && logins[usuario].senha === senha) {
@@ -236,10 +131,10 @@
         return false;
       } else {
         erroMsg.style.display = "block";
-        botao.classList.add("shake");
+        botao.classList.add("shake-animation");
 
         setTimeout(() => {
-          botao.classList.remove("shake");
+          botao.classList.remove("shake-animation");
         }, 400);
 
         return false;
