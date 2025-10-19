@@ -132,7 +132,7 @@
       </div>
     </section>
   </div>
-  <script type="module">
+<script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
   import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-messaging.js";
 
@@ -154,7 +154,7 @@
   Notification.requestPermission().then(permission => {
     if (permission === "granted") {
       // Troque pela SUA chave pública VAPID (vá em Configurações > Cloud Messaging)
-      getToken(messaging, { vapidKey: "SUA_CHAVE_VAPID_AQUI" })
+      getToken(messaging, { vapidKey: "BIWOuhoMTlPQlpRgxooEv7Wu6BAkR0PynzTwKtOsNxJdrxb_h6ptYxbOwFBE7OvBmGOQT7ZsEZWBqkJWiz7QCKE" })
         .then(token => {
           console.log("✅ Token do dispositivo:", token);
           alert("Notificações ativadas com sucesso!");
@@ -171,7 +171,7 @@
     alert(payload.notification.title);
   });
 </script>
-
 </body>
 </html>
+
 
