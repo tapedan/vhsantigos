@@ -132,5 +132,46 @@
       </div>
     </section>
   </div>
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-app.js";
+  import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/11.0.0/firebase-messaging.js";
+
+  // Configuração do Firebase (a sua)
+  const firebaseConfig = {
+    apiKey: "AIzaSyB8dC0vFbYPiBCGvtj1MPiM0EvAyHA2z-k",
+    authDomain: "vhs-antigos.firebaseapp.com",
+    projectId: "vhs-antigos",
+    storageBucket: "vhs-antigos.firebasestorage.app",
+    messagingSenderId: "921393302155",
+    appId: "1:921393302155:web:244f844441e7cc601f228e"
+  };
+
+  // Inicializa o app
+  const app = initializeApp(firebaseConfig);
+  const messaging = getMessaging(app);
+
+  // Solicita permissão do usuário
+  Notification.requestPermission().then(permission => {
+    if (permission === "granted") {
+      // Troque pela SUA chave pública VAPID (vá em Configurações > Cloud Messaging)
+      getToken(messaging, { vapidKey: "SUA_CHAVE_VAPID_AQUI" })
+        .then(token => {
+          console.log("✅ Token do dispositivo:", token);
+          alert("Notificações ativadas com sucesso!");
+        })
+        .catch(err => console.error("Erro ao obter token:", err));
+    } else {
+      alert("Permissão de notificação negada.");
+    }
+  });
+
+  // Recebe mensagens enquanto o site estiver aberto
+  onMessage(messaging, payload => {
+    console.log("🔔 Notificação recebida:", payload);
+    alert(payload.notification.title);
+  });
+</script>
+
 </body>
 </html>
+
