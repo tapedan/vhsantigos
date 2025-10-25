@@ -54,6 +54,10 @@
       animation: vhsEffect 3s infinite ease-in-out;
     }
 
+    .bannervideo {
+      border-radius: 10px;
+    }
+
     .fade-in {
       animation: fadeIn 2.5s forwards;
     }
@@ -122,7 +126,22 @@
         width: 120%;
         height: 120%;
       }
+
+      .bannervideo {
+        max-width: 100%;
+        border-radius: 1rem;
+        opacity: 1;
+        width: 100%;
+        height: auto;
+      }
+
+    @media (min-width: 768px) {
+      .bannervideo {
+        max-width: 500px;
+      }
     }
+    }
+
   </style>
   <script>
     function mostrarLogout() {
@@ -203,15 +222,13 @@
   <div class="container mx-auto px-4 py-10 relative z-10">
     <section class="intro flex flex-col md:flex-row justify-between items-center gap-8">
       <div class="intro-texto max-w-[600px]">
-        <h1 class="text-3xl sm:text-4xl mb-5 opacity-0">VIAGENS DIVERSAS</h1>
+        <h1 class="text-3xl sm:text-4xl mb-5 opacity-0">NATAL COM A NENÊ</h1>
         <p class="text-base sm:text-lg leading-relaxed opacity-0">
-          Uma das maiores gravações já lançadas neste site, Viagens Diversas reúne registros de passeios para lugares bem conhecidos, como Campos do Jordão e Caraguatatuba. Esta última se destaca por ter sido feita na companhia especial dos vizinhos da rua!
+          Veja como foi o natal junto da tia nenê na casa da Biza. Essa também é a primeira gravação restaurada, colocada no NÃO LISTADO do Youtube, ou seja, apenas pessoas da família podem visualizar.
         </p>
       </div>
       <div class="intro-logo w-full md:w-auto">
-        <a href="https://drive.google.com/file/d/1bZrQeubHH9rFIdgNv8bYEfZlfdRlV7z1/view?usp=drive_link" target="_blank">
-          <img src="imagens/Capa_Viagens_Diversas.png" alt="Mural" class="max-w-full rounded-xl opacity-0 w-full md:max-w-[500px]">
-        </a>
+      <iframe class="bannervideo" width="560" height="315" src="https://www.youtube.com/embed/uqdt6UZkRR0?si=rD9iVSM1-i7vDjmu" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
     </section>
 
